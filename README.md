@@ -1,6 +1,6 @@
 # 🎉 Welcome to the Ultimate DRF Login/Logout Tutorial! 🚀
 
-Do you want to master **authentication** and **permissions** with Django Rest Framework (DRF) while building a super cool API? You’ve come to the right place! 🐍
+Do you want to master **authentication** and **permissions** with Django Rest Framework (DRF) while building a super cool API?... yes! You’ve come to the right place! 🐍
 
 This tutorial takes you on an exciting journey through **logins**, **logouts**, **identification**, and **authentication** using DRF. We start simple and work our way up to more advanced methods. 😎
 
