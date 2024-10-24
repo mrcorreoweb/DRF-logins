@@ -132,3 +132,27 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Using the default Django User model: Do not add AUTH_USER_MODEL 
 # AUTH_USER_MODEL = "users.User"
+
+# Rest Framework Configuration
+# Add a REST_FRAMEWORK dictionary to specify the authentication 
+# and permission classes
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        # Ensure the use of basic authentication
+        'rest_framework.authentication.BasicAuthentication',
+        # Ensure the use of session-based authentication
+        # helps to keep the logged-in state of the user
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        # Ensure unauthenticated users can only read data
+        # but only authenticated users can create, delete or update data
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ],
+}
+
+
+# Change the default behavior of redirecting to
+# the profile page of the user after login
+LOGIN_REDIRECT_URL = '/posts/'  # Redirect to /posts/ after login
+

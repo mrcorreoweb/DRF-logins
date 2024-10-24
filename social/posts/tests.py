@@ -27,7 +27,7 @@ class PostTests(APITestCase):
         """
         Ensure authenticated users can create posts.
         """
-        self.client.login(username='user1', password='password123')
+        self.client.force_authenticate(user=self.user1) # Force authentication
         url = reverse('post-list')
         data = {'content': 'A new post by user1'}
         response = self.client.post(url, data, format='json')
@@ -44,14 +44,14 @@ class PostTests(APITestCase):
         data = {'content': 'Unauthorized post'}
         response = self.client.post(url, data, format='json')
 
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertEqual(Post.objects.count(), 1)  # Still only one post
 
     def test_update_post_owner(self):
         """
         Ensure a post owner can update their post.
         """
-        self.client.login(username='user1', password='password123')
+        self.client.force_authenticate(user=self.user1) # Force authentication
         url = reverse('post-detail', args=[self.post1.id])
         data = {'content': 'Updated post content'}
         response = self.client.put(url, data, format='json')
@@ -64,7 +64,7 @@ class PostTests(APITestCase):
         """
         Ensure non-owners cannot update someone else's post.
         """
-        self.client.login(username='user2', password='password123')
+        self.client.force_authenticate(user=self.user2) # Force authentication
         url = reverse('post-detail', args=[self.post1.id])
         data = {'content': 'User2 trying to update user1 post'}
         response = self.client.put(url, data, format='json')
@@ -77,7 +77,7 @@ class PostTests(APITestCase):
         """
         Ensure the post owner can delete their post.
         """
-        self.client.login(username='user1', password='password123')
+        self.client.force_authenticate(user=self.user1) # Force authentication
         url = reverse('post-detail', args=[self.post1.id])
         response = self.client.delete(url)
 
@@ -88,7 +88,7 @@ class PostTests(APITestCase):
         """
         Ensure non-owners cannot delete someone else's post.
         """
-        self.client.login(username='user2', password='password123')
+        self.client.force_authenticate(user=self.user2) # Force authentication
         url = reverse('post-detail', args=[self.post1.id])
         response = self.client.delete(url)
 
