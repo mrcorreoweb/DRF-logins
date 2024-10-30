@@ -52,16 +52,20 @@ Each branch is a chapter in your journey to authentication and permission master
   - 🙀 Rarely used in production because credentials are sent with each request, which is not very secure.
 
 - 🍪 **`session-auth`**: Dive into **Session Authentication**. It's like getting a VIP wristband—logged in once and remembered until you leave.
-  - 😸 Great for web clients that support cookies. Smooth, stateful experience.
-  - 🙀 Not ideal for mobile apps or stateless APIs as it relies on server-side sessions.
+  - 😸 Great for development with the browsable API ant to test how authentication works.
+  - 🙀 Session-based authentication is inherently stateful, as it keeps track of sessions on the server. This is contrary to the principles of a stateless REST API, where each request should be independent.
 
-- 🔑 **`token-auth`**: Serious stuff with **Token Authentication**. Each request carries a token, like a passphrase at an exclusive club.
+- 🔑 **`token-auth`**: Serious stuff with DRF **Token Authentication**. Each request carries a token, like a passphrase at an exclusive club.
   - 😸 Ideal for mobile apps or stateless scenarios. Tokens are reusable.
   - 🙀 Tokens need protection—if compromised, the token can be misused until revoked.
 
-- 🤘 **`jwt-auth`**: Level up with **JWT Authentication**—secure and stateless. JWTs are like backstage passes for the web.
+- 🤘 **`jwt-auth`**: Level up with JSON Web Tokens **JWT Authentication** —> secure and stateless. JWTs are like backstage passes for the web.
   - 😸 JWTs work well for mobile and web apps, with extra data for roles.
   - 🙀 Handle the secret key carefully and manage token expiration for security.
+
+- 🥇 **`oauth2`**: **OAuth2** is a way to provide third-party authentication (e.g., allowing users to log in with their Google, Facebook, or other social media accounts).
+  - 😸 OAuth2 is the recommended standard.
+  - 🙀 OAuth2 is much more complex to set up compared to Token or JWT authentication.
 
 - 🎯 **`role-permission-system`**: Explore **Role-Based Access Control (RBAC)**. Assign roles like `Admin`, `Moderator`, or `User`.
   - 😸 Assign specific powers to different roles—Admins rule, moderators keep order, users enjoy their privileges.
