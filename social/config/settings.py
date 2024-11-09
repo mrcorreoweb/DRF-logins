@@ -156,3 +156,6 @@ REST_FRAMEWORK = {
 # the profile page of the user after login
 LOGIN_REDIRECT_URL = '/posts/'  # Redirect to /posts/ after login
 
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000', 'http://localhost']
+CSRF_COOKIE_NAME = 'csrftoken'
+SESSION_COOKIE_NAME = 'sessionid'
