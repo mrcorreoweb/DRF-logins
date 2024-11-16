@@ -2,6 +2,7 @@ from django.urls import reverse
 from rest_framework.test import APITestCase
 from rest_framework import status
 from django.contrib.auth.models import User
+from rest_framework.authtoken.models import Token
 import unittest
 
 class UserTests(APITestCase):
@@ -9,6 +10,9 @@ class UserTests(APITestCase):
     def setUp(self):
         # Create a user for testing
         self.user = User.objects.create_user(username='testuser', password='password123')
+
+        # Create a token for the user
+        self.token = Token.objects.create(user=self.user)
 
     def test_user_registration(self):
         """
@@ -28,14 +32,15 @@ class UserTests(APITestCase):
     
     def test_user_login(self):
         """
-        Ensure we can log in with valid credentials.
+        Ensure we can log in with a valid token.
         """
-        # Use the client login helper to set up session-based login
-        login_successful = self.client.login(username='testuser', password='password123')
-        self.assertTrue(login_successful)
+        # Use the token to log in
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
+        url = reverse('user-detail', args=[self.user.id])  # Using a viewset 
+        response = self.client.get(url)
 
-        # Manually check if session contains '_auth_user_id'
-        self.assertIn('_auth_user_id', self.client.session)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['username'], 'testuser')
 
     @unittest.skip("Skipping login because in DRF have to be checked manually")
     def test_user_login_invalid_credentials(self):
@@ -61,8 +66,8 @@ class UserTests(APITestCase):
         """
         Ensure a user can view their profile after logging in.
         """
-        self.client.login(username='testuser', password='password123')
-        url = reverse('user-detail', args=[self.user.id])  # Assuming you use a viewset
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
+        url = reverse('user-detail', args=[self.user.id])  # Using a viewset
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)

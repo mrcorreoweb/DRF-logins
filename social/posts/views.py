@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from rest_framework.authentication import SessionAuthentication # helps to keep the logged-in state of the user
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication 
 from rest_framework.exceptions import PermissionDenied
 from .models import Post
 from .serializers import PostSerializer
@@ -8,8 +8,14 @@ from .serializers import PostSerializer
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly] # Only authenticated users can create posts
-    authentication_classes = [SessionAuthentication] # helps to keep the logged-in state of the user
+    # Permissions and authentication methods are not needed to be declared
+    # in the view because has been established by default
+    # for the whole project in settings.py
+    # only needed if you want to override the default settings
+    # permission_classes = [IsAuthenticatedOrReadOnly]
+    # authentication_classes = [
+    #    SessionAuthentication, 
+    #    TokenAuthentication] 
 
     def perform_create(self, serializer):
         # Automatically set the owner of the post to the logged-in user

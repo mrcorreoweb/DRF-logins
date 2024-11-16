@@ -42,8 +42,8 @@ INSTALLED_APPS = [
     "posts",
 
     "rest_framework",
-    "rest_framework.authtoken",
-    "django_extensions",
+    "rest_framework.authtoken", # Needed for Token Authentication
+    "django_extensions", 
 
 ]
 
@@ -130,27 +130,20 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# Using the default Django User model: Do not add AUTH_USER_MODEL 
-# AUTH_USER_MODEL = "users.User"
-
 # Rest Framework Configuration
-# Add a REST_FRAMEWORK dictionary to specify the authentication 
-# and permission classes
+# Add the following REST_FRAMEWORK dictionary 
+# to specify the default authentication and permission classes
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        # Ensure the use of basic authentication
-        'rest_framework.authentication.BasicAuthentication',
-        # Ensure the use of session-based authentication
-        # helps to keep the logged-in state of the user
-        'rest_framework.authentication.SessionAuthentication',
+    'DEFAULT_AUTHENTICATION_CLASSES': [        
+        'rest_framework.authentication.TokenAuthentication',
+        # For browser sessions and browsable API we keep cookies                
+        'rest_framework.authentication.SessionAuthentication', 
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        # Ensure unauthenticated users can only read data
-        # but only authenticated users can create, delete or update data
+        # Other permissions are: AllowAny, IsAuthenticated
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
 }
-
 
 # Change the default behavior of redirecting to
 # the profile page of the user after login
@@ -159,3 +152,22 @@ LOGIN_REDIRECT_URL = '/posts/'  # Redirect to /posts/ after login
 CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000', 'http://localhost']
 CSRF_COOKIE_NAME = 'csrftoken'
 SESSION_COOKIE_NAME = 'sessionid'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.security.csrf': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}
+
+CSRF_FAILURE_VIEW = 'django.views.csrf.csrf_failure'
+
